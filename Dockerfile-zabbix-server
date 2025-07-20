@@ -46,7 +46,9 @@ RUN apt-get -y install zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql z
 
 RUN rm -f zabbix-release_latest_7.4+ubuntu24.04_all.deb && rm -rf /var/lib/apt/lists/*
 
-RUN systemctl start zabbix-agent.service && systemctl enable zabbix-agent.service
+COPY ./config/nginx/script/entrypoint.sh /usr/local/bin/
+
+RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # 7. 컨테이너 실행 시 기본 명령어 (대화형 셸 실행)
-CMD ["/bin/bash"]
+CMD ["entrypoint.sh"]
