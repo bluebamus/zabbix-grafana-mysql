@@ -20,8 +20,7 @@ RUN apt-get update && \
     locales \
     tzdata \
     curl wget git tar \
-    build-essential gcc && \
-    rm -rf /var/lib/apt/lists/*
+    build-essential gcc
 
 # 4) 로케일 생성
 RUN sed -i "s/^# ${OS_LOCALE}/${OS_LOCALE}/" /etc/locale.gen && \
@@ -46,7 +45,7 @@ RUN apt-get -y install zabbix-server-mysql zabbix-frontend-php zabbix-nginx-conf
 
 RUN apt-get -y install zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
 
-RUN rm -f zabbix-release_latest+ubuntu24.04_all.deb && rm -rf /var/lib/apt/lists/*
+RUN rm -f zabbix-release_latest_7.4+ubuntu24.04_all.deb && rm -rf /var/lib/apt/lists/*
 
 RUN systemctl start zabbix-agent.service && systemctl enable zabbix-agent.service
 
