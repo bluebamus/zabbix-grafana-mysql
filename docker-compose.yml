@@ -73,9 +73,9 @@ services:
       - ./data/grafana:/var/lib/grafana
     depends_on:
       - mysql
-    networks:
-      network:
-        ipv4_address: 172.26.0.30
+    # networks:
+    #   network:
+    #     ipv4_address: 172.26.0.30
 
   mysql:
     image: percona/percona-server:8.4.4-4
