@@ -1,0 +1,42 @@
+# 1. 특정 버전의 베이스 이미지 사용
+FROM ubuntu:24.04
+
+# 2. ARG를 사용하여 Locale 변수 기본값 설정
+ARG OS_LOCALE="ko_KR.UTF-8"
+ARG OS_LOCALE_COUNTRY="ko_KR"
+ARG OS_LOCALE_ENCODING="UTF-8"
+ARG USER_NAME=app
+
+# 3. ENV를 한 번에 설정하고 가독성 향상
+ENV LANG=${OS_LOCALE} \
+    LANGUAGE=${OS_LOCALE} \
+    LC_ALL=${OS_LOCALE} \
+    TZ="Asia/Seoul"
+
+# 3) 패키지 설치 및 청소
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+      apt-utils \
+      locales \
+      tzdata \
+      curl wget git tar \
+      build-essential gcc && \
+    rm -rf /var/lib/apt/lists/*
+
+# 4) 로케일 생성
+RUN sed -i "s/^# ${OS_LOCALE}/${OS_LOCALE}/" /etc/locale.gen && \
+    locale-gen ${OS_LOCALE}
+
+# 5) 타임존 설정
+RUN ln -fs /usr/share/zoneinfo/${TZ} /etc/localtime && \
+    echo "${TZ}" > /etc/timezone && \
+    dpkg-reconfigure -f noninteractive tzdata
+
+# 6. 기본 작업 디렉토리 설정
+WORKDIR /home/${USER_NAME}
+
+# 7. Non-root 사용자로 전환 (보안 강화)
+USER ${USER_NAME}
+
+# 8. 컨테이너 실행 시 기본 명령어 (대화형 셸 실행)
+CMD ["/bin/bash"]

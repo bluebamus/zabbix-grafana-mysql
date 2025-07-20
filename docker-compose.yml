@@ -1,0 +1,109 @@
+services:
+  webserver:
+    build:
+      context: .
+      dockerfile: Dockerfile-nginx
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "100m"
+    container_name: nginx-gunicorn-webserver
+    # working_dir: /home/app
+    restart: always
+    ports:
+      - 8080:80
+      - 443:443
+    environment:
+      TZ: "Asia/Seoul"
+    volumes:
+      - ./config/nginx/script/:/script/
+      - ./config/nginx/nginx:/etc/nginx/
+      - ./config/nginx/ssl/certs/:/etc/ssl/certs/
+      - ./config/nginx/ssl/letsencrypt/:/etc/letsencrypt/
+      - ./logs/nginx:/log
+    depends_on:
+      - mysql
+    # networks:
+    #   network:
+    #     ipv4_address: 172.26.0.10
+
+  zabbix-server:
+    build:
+      context: .           # 도커파일이 있는 디렉터리 (docker-compose.yml과 동일 폴더)
+      dockerfile: dockerfile-zabbix-server
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "100m"
+    container_name: zabbix-server
+    # working_dir: /home/app
+    restart: always
+    ports:
+      - "80:80"
+    environment:
+      TZ: "Asia/Seoul"
+    volumes:
+      - ./config/zabbix/server:/etc/zabbix
+      - ./config/zabbix/nginx:/etc/nginx
+    depends_on:
+      - mysql
+    networks:
+      network:
+        ipv4_address: 172.26.0.20
+
+  grafana:
+    image: grafana/grafana-enterprise
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "100m"
+    container_name: grafana
+    # working_dir: /home/app
+    restart: always
+    ports:
+      - '3000:3000'
+    environment:
+      TZ: "Asia/Seoul"
+    volumes:
+      - ./data/grafana:/var/lib/grafana
+    depends_on:
+      - mysql
+    networks:
+      network:
+        ipv4_address: 172.26.0.30
+
+  mysql:
+    image: percona/percona-server:8.4.4-4
+    logging:
+      driver: "json-file"
+      options:
+        max-file: "5"
+        max-size: "100m"
+    container_name: mysql
+    # working_dir: /home/app
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: test1!
+      TZ: Asia/Seoul
+    # ports:
+    #   - "3306:3306"
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+      - ./config/mysql/my.cnf:/etc/my.cnf
+      - ./config/mysql/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+      - ./config/mysql/backup:/backup
+      - ./logs/mysql:/var/log/mysql
+    # networks:
+    #   network:
+    #     ipv4_address: 172.26.0.40
+
+networks:
+  network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.26.0.0/16
+          gateway: 172.26.0.1

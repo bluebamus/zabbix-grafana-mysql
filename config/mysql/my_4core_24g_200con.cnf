@@ -1,0 +1,57 @@
+[mysql]
+default-character-set = utf8mb4                       # ▶️ CLI 기본 문자셋 / 💠 latin1
+
+[client]
+default-character-set = utf8mb4                       # ▶️ 클라이언트 라이브러리 기본 문자셋 / 💠 latin1
+
+[mysqld]
+# --------------------------- 네트워크 -------------------------------
+port            = 3306                                # ▶️ 수신 포트 / 💠 3306
+bind-address    = 0.0.0.0                             # ▶️ 전 인터페이스 바인드 / 💠 127.0.0.1
+socket          = /var/run/mysqld/mysqld.sock         # ▶️ 유닉스 소켓 경로 / 💠 /var/run/mysqld/mysqld.sock
+datadir         = /var/lib/mysql                      # ▶️ 데이터 파일 위치 / 💠 /var/lib/mysql
+# default_authentication_plugin = mysql_native_password # ▶️ 로그인 플러그인 / 💠 mysql_native_password / caching_sha2_password
+
+# --------------------------- 메모리 -------------------------------
+innodb_buffer_pool_size      = 17G  # ▶️ Hot 데이터 캐시(≈RAM 70 %) / 💠 128M
+innodb_buffer_pool_instances = 4    # ▶️ 버퍼풀 파티셔닝(코어수 기준) / 💠 1
+
+# --------------------------- 로그 -------------------------------
+innodb_log_file_size   = 1G # ▶️ REDO 로그 파일 크기 / 💠 128M
+innodb_log_buffer_size = 64M  # ▶️ 트랜잭션 로그 버퍼 / 💠 16M
+innodb_flush_log_at_trx_commit = 1   # ▶️ 1=완전 내구성 / 💠 1
+innodb_flush_method    = O_DIRECT     # ▶️ OS 캐시 우회, 이중버퍼 방지 / 💠 fsync
+
+# --------------------------- I/O -------------------------------
+innodb_io_capacity     = 1000  # ▶️ SSD 기대 IOPS / 💠 200
+innodb_io_capacity_max = 2000  # ▶️ 피크 IOPS 상한 / 💠 2000
+innodb_read_io_threads  = 4    # ▶️ InnoDB 읽기 스레드 / 💠 4
+innodb_write_io_threads = 4    # ▶️ InnoDB 쓰기 스레드 / 💠 4
+innodb_file_per_table   = 1    # ▶️ 개별 테이블스페이스 / 💠 1
+
+# --------------------------- 연결 / 스레드 -------------------------------
+max_connections   = 200  # ▶️ 동시 접속 한도 / 💠 151
+thread_cache_size = 20   # ▶️ 재사용 스레드 캐시 / 💠 10
+
+# --------------------------- 임시·정렬 버퍼 -------------------------------
+tmp_table_size       = 256M  # ▶️ 메모리 임시테이블 한계 / 💠 16M
+max_heap_table_size  = 256M  # ▶️ HEAP 임시테이블 한계 / 💠 16M
+join_buffer_size     = 2M    # ▶️ 조인 버퍼 / 💠 256K
+sort_buffer_size     = 2M    # ▶️ 정렬 버퍼 / 💠 256K
+read_buffer_size     = 1M    # ▶️ 순차 읽기 버퍼 / 💠 128K
+read_rnd_buffer_size = 1M    # ▶️ 랜덤 읽기 버퍼 / 💠 256K
+table_open_cache         = 2000 # ▶️ 열린 테이블 캐시 / 💠 2000
+table_definition_cache   = 1400 # ▶️ 테이블 정의 캐시 / 💠 1400
+
+# --------------------------- 로깅 -------------------------------
+log_error            = /var/log/mysql/error.log        # ▶️ 에러 로그 / 💠 플랫폼별 경로
+slow_query_log       = ON                              # ▶️ 슬로우 로그 ON / 💠 OFF
+slow_query_log_file  = /var/log/mysql/slow_query.log   # ▶️ 슬로우 로그 경로
+long_query_time      = 0.5                             # ▶️ 슬로우 간주 기준(초) / 💠 10
+
+# --------------------------- 문자셋 -------------------------------
+character_set_server = utf8mb4           # ▶️ 서버 문자셋 / 💠 latin1
+collation_server     = utf8mb4_unicode_ci # ▶️ 서버 콜레이션 / 💠 latin1_swedish_ci
+
+# --------------------------- 플래그 -------------------------------
+skip-name-resolve                        # ▶️ DNS 역조회 비활성화 / 💠 OFF
