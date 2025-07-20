@@ -26,7 +26,6 @@ ENV TZ="Asia/Seoul"
 RUN	\
     BUILD_DEPS='software-properties-common wget gnupg' \
     && apt-get install --no-install-recommends -y $BUILD_DEPS \
-    && apt-get install -y sendmail \
     && apt-get install -y cron certbot \
     && apt-get install wget
 # Cleaning
