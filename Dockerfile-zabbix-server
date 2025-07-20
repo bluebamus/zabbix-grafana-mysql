@@ -40,11 +40,11 @@ RUN wget --no-check-certificate https://repo.zabbix.com/zabbix/7.4/release/ubunt
 
 RUN dpkg -i zabbix-release_latest_7.4+ubuntu24.04_all.deb
 
-RUN apt update
+RUN apt-get update
 
-RUN apt -y install zabbix-server-mysql zabbix-frontend-php zabbix-nginx-conf zabbix-sql-scripts zabbix-agent2
+RUN apt-get -y install zabbix-server-mysql zabbix-frontend-php zabbix-nginx-conf zabbix-sql-scripts zabbix-agent2
 
-RUN apt -y install zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
+RUN apt-get -y install zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
 
 RUN rm -f zabbix-release_latest+ubuntu24.04_all.deb && rm -rf /var/lib/apt/lists/*
 
