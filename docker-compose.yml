@@ -18,9 +18,9 @@ services:
       TZ: "Asia/Seoul"
     volumes:
       - ./config/nginx/script/:/script/
-      - ./config/nginx/nginx:/etc/nginx/
-      - ./config/nginx/ssl/certs/:/etc/ssl/certs/
-      - ./config/nginx/ssl/letsencrypt/:/etc/letsencrypt/
+      # - ./config/nginx/nginx:/etc/nginx/
+      # - ./config/nginx/ssl/certs/:/etc/ssl/certs/
+      # - ./config/nginx/ssl/letsencrypt/:/etc/letsencrypt/
       - ./logs/nginx:/log
     depends_on:
       - mysql
@@ -47,8 +47,8 @@ services:
     environment:
       TZ: "Asia/Seoul"
     volumes:
-      - ./config/zabbix/server:/etc/zabbix
-      - ./config/zabbix/nginx:/etc/nginx
+      # - ./config/zabbix/server:/etc/zabbix
+      # - ./config/zabbix/nginx:/etc/nginx
     depends_on:
       - mysql
     networks:
