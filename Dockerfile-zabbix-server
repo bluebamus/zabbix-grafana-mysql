@@ -42,9 +42,9 @@ RUN dpkg -i zabbix-release_latest_7.4+ubuntu24.04_all.deb
 
 RUN apt update
 
-RUN apt install zabbix-server-mysql zabbix-frontend-php zabbix-nginx-conf zabbix-sql-scripts zabbix-agent2
+RUN apt -y install zabbix-server-mysql zabbix-frontend-php zabbix-nginx-conf zabbix-sql-scripts zabbix-agent2
 
-RUN apt install zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
+RUN apt -y install zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
 
 RUN systemctl start zabbix-agent.service && systemctl enable zabbix-agent.service
 
