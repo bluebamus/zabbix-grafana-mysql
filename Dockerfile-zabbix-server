@@ -36,7 +36,7 @@ RUN ln -fs /usr/share/zoneinfo/${TZ} /etc/localtime && \
 WORKDIR /home/${USER_NAME}
 
 # 7. 작업
-RUN wget https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.4+ubuntu24.04_all.deb
+RUN wget --no-check-certificate https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.4+ubuntu24.04_all.deb
 
 RUN dpkg -i zabbix-release_latest_7.4+ubuntu24.04_all.deb 
 
