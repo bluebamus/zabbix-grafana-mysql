@@ -5,7 +5,6 @@ FROM ubuntu:24.04
 ARG OS_LOCALE="ko_KR.UTF-8"
 ARG OS_LOCALE_COUNTRY="ko_KR"
 ARG OS_LOCALE_ENCODING="UTF-8"
-ARG USER_NAME="app"
 
 # 3. ENV를 한 번에 설정하고 가독성 향상
 ENV LANG=${OS_LOCALE} \
@@ -15,6 +14,9 @@ ENV LANG=${OS_LOCALE} \
 
 # 3) 패키지 설치 및 청소
 RUN apt-get update && \
+    apt-get install -y ca-certificates && \
+    update-ca-certificates && \
+    apt-get update && \
     apt-get install -y --no-install-recommends \
     apt-utils \
     locales \
@@ -31,10 +33,7 @@ RUN ln -fs /usr/share/zoneinfo/${TZ} /etc/localtime && \
     echo "${TZ}" > /etc/timezone && \
     dpkg-reconfigure -f noninteractive tzdata
 
-# 6. 기본 작업 디렉토리 설정
-WORKDIR /home/${USER_NAME}
-
-# 7. 작업
+# 6. 작업
 RUN wget --no-check-certificate https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.4+ubuntu24.04_all.deb
 
 RUN dpkg -i zabbix-release_latest_7.4+ubuntu24.04_all.deb
@@ -49,8 +48,5 @@ RUN rm -f zabbix-release_latest_7.4+ubuntu24.04_all.deb && rm -rf /var/lib/apt/l
 
 RUN systemctl start zabbix-agent.service && systemctl enable zabbix-agent.service
 
-# 8. Non-root 사용자로 전환 (보안 강화)
-USER ${USER_NAME}
-
-# 9. 컨테이너 실행 시 기본 명령어 (대화형 셸 실행)
+# 7. 컨테이너 실행 시 기본 명령어 (대화형 셸 실행)
 CMD ["/bin/bash"]
