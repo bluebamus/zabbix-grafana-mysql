@@ -46,7 +46,7 @@ services:
       - "10051:10051"
     environment:
       TZ: "Asia/Seoul"
-    volumes:
+    # volumes:
       # - ./config/zabbix/server:/etc/zabbix
       # - ./config/zabbix/nginx:/etc/nginx
     depends_on:
