@@ -31,7 +31,7 @@ services:
   zabbix-server:
     build:
       context: .           # 도커파일이 있는 디렉터리 (docker-compose.yml과 동일 폴더)
-      dockerfile: dockerfile-zabbix-server
+      dockerfile: Dockerfile-zabbix-server
     logging:
       driver: "json-file"
       options:
