@@ -22,6 +22,7 @@ RUN apt-get update && \
     locales \
     tzdata \
     curl wget git tar \
+    supervisor \
     build-essential gcc
 
 # 4) 로케일 생성
@@ -44,11 +45,11 @@ RUN apt-get -y install zabbix-server-mysql zabbix-frontend-php zabbix-nginx-conf
 
 RUN apt-get -y install zabbix-agent2-plugin-mongodb zabbix-agent2-plugin-mssql zabbix-agent2-plugin-postgresql
 
-RUN rm -f zabbix-release_latest_7.4+ubuntu24.04_all.deb && rm -rf /var/lib/apt/lists/*
+RUN rm -f zabbix-release_latest_7.4+ubuntu24.04_all.deb &&  apt-get clean && rm -rf /var/lib/apt/lists/*
 
-COPY ./config/nginx/script/entrypoint.sh /usr/local/bin/
+RUN mkdir -p /var/log/zabbix && chown -R zabbix:zabbix /var/log/zabbix
 
-RUN chmod +x /usr/local/bin/entrypoint.sh
+COPY ./config/zabbix/script/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
 # 7. 컨테이너 실행 시 기본 명령어 (대화형 셸 실행)
-CMD ["entrypoint.sh"]
+CMD ["supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"]
