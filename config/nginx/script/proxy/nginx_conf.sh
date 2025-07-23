@@ -58,8 +58,8 @@ do
 done 
 
 sed 's/webroot/'$webroot'/g' sample_nginx.conf > $filename'1'.temp
-sed 's/domain/'$domain'/g' $filename'1'.temp > $filename'2'.temp
-sed 's/portnumber/'$portnumber'/g' $filename'2'.temp > $filename'3'.temp
+sed 's/portnumber/'$portnumber'/g' $filename'1'.temp > $filename'2'.temp
+sed 's/domain/'$domain'/g' $filename'2'.temp > $filename'3'.temp
 sed 's/appname/'$appname'/g' $filename'3'.temp > $filename'4'.temp
 if [[ "$serviceport" == "" ]]; then
     sed 's/:serviceport/''/g' $filename'4'.temp > $filename'5'.temp
@@ -72,8 +72,3 @@ rm *.temp
 
 mkdir -p /www/$webroot/media
 mkdir -p /www/$webroot/static
-
-
-
-
-

@@ -58,15 +58,15 @@ do
 done 
 
 sed 's/webroot/'$webroot'/g' sample_nginx_https.conf > $filename'1'.temp
-sed 's/domain/'$domain'/g' $filename'1'.temp > $filename'2'.temp
-sed 's/portnumber/'$portnumber'/g' $filename'2'.temp > $filename'3'.temp
+sed 's/portnumber/'$portnumber'/g' $filename'1'.temp > $filename'2'.temp
+sed 's/domain/'$domain'/g' $filename'2'.temp > $filename'3'.temp
 sed 's/appname/'$appname'/g' $filename'3'.temp > $filename'4'.temp
 if [[ "$serviceport" == "" ]]; then
     sed 's/:serviceport/''/g' $filename'4'.temp > $filename'5'.temp
 else
     sed 's/serviceport/'$serviceport'/g' $filename'4'.temp > $filename'5'.temp
 fi
-sed 's/filename/'$filename'/g' $filename'5'.temp > ./conf.d/$filename'_ng_https'.conf 
+sed 's/filename/'$filename'/g' $filename'5'.temp > ./conf.d/$filename'_https_ng'.conf 
 
 rm *.temp
 
