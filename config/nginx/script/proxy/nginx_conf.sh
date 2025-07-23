@@ -69,3 +69,11 @@ fi
 sed 's/filename/'$filename'/g' $filename'5'.temp > ./conf.d/$filename'_ng'.conf 
 
 rm *.temp
+
+mkdir -p /www/$webroot/media
+mkdir -p /www/$webroot/static
+
+
+
+
+
